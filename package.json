@@ -35,7 +35,9 @@
     "test": "react-app-rewired test",
     "test:coverage": "react-app-rewired test --coverage --watchAll false",
     "eject": "react-app-rewired eject",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "prepare": "husky install",
+    "lint-eslint": "eslint --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
