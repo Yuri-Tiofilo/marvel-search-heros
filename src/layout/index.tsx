@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react'
 import { DefaultTheme, ThemeProvider } from 'styled-components'
 
 import GlobalStyle from '../common/styles/global'
+import 'common/i18n'
 
 type Props = {
   theme: DefaultTheme
