@@ -1,14 +1,15 @@
 import { Header } from 'components/Header'
 import React from 'react'
 
-import { Container, Content } from './styles'
+import { Container, Content, Title } from './styles'
 
 const Home = () => {
   return (
     <Container>
-      <h1>teste</h1>
-      <Header />
-      <Content></Content>
+      <Header isHome />
+      <Content>
+        <Title>Explore o Universo</Title>
+      </Content>
     </Container>
   )
 }

@@ -6,7 +6,7 @@ export default {
     PRIMARY: '#FF0000',
     SECONDARY: '#000000',
 
-    TITLE: '#101010',
+    TITLE: '#404040',
     TEXT: '#383B43',
     SUBTEXT: '#6D7278',
     BACKGROUND_SEARCH: '',
