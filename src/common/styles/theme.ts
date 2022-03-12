@@ -3,17 +3,21 @@ export default {
   COLORS: {
     BACKGROUND: '#F3F2F8',
 
-    PRIMARY: '#F7B500',
+    PRIMARY: '#FF0000',
     SECONDARY: '#000000',
 
+    TITLE: '#101010',
     TEXT: '#383B43',
     SUBTEXT: '#6D7278',
+    BACKGROUND_SEARCH: '',
+    TEXT_RED: '#ed4340',
 
     WHITE: '#FFFFFF',
     WHITE300: '#F1F1F1',
     BORDER: '#C5CADA',
     UNDERLINE: '#0091FF',
-    ERROR: '#ed4337'
+    ERROR: '#ed4337',
+    SUCESS: '#00C851'
   },
 
   FONTS: {
