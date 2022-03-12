@@ -18,4 +18,14 @@ export const Title = styled.h1`
   color: ${({ theme }) => theme.COLORS.TITLE};
   font-size: 2rem;
   letter-spacing: 0.15rem;
+  text-align: center;
+
+  padding-bottom: 10px;
+`
+
+export const SubTitle = styled.span`
+  font-weight: 400;
+  font-size: 16px;
+
+  color: ${({ theme }) => theme.COLORS.SUBTEXT};
 `

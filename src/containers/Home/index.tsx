@@ -1,8 +1,8 @@
 import React from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 import { Header } from 'components/Header'
-import { Container, Content, Title } from './styles'
+import { Container, Content, Title, SubTitle } from './styles'
 
 const Home = () => {
   const { t } = useTranslation()
@@ -11,9 +11,9 @@ const Home = () => {
     <Container>
       <Header isHome />
       <Content>
-        <Title>
-          <Trans>{t('general.home.title')}</Trans>
-        </Title>
+        <Title>{t('general.home.title1')}</Title>
+
+        <SubTitle>{t('general.home.subtitle')}</SubTitle>
       </Content>
     </Container>
   )
