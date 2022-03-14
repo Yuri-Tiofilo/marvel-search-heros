@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Loading from '../../components/Loading'
-import routes from '../../routes'
+import Loading from 'components/Controllers/Loading'
+import routes from 'routes'
 import { Container } from './styles'
 
 const Main = () => (

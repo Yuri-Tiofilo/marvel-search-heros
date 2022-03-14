@@ -10,7 +10,13 @@ export const Container = styled.div`
   flex-direction: column;
 `
 
-export const Content = styled.main``
+export const Content = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 70rem;
+`
 
 export const Title = styled.h1`
   text-transform: uppercase;
@@ -26,6 +32,7 @@ export const Title = styled.h1`
 export const SubTitle = styled.span`
   font-weight: 400;
   font-size: 16px;
+  text-align: center;
 
   color: ${({ theme }) => theme.COLORS.SUBTEXT};
 `

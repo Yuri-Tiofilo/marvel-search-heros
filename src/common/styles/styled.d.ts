@@ -13,7 +13,6 @@ declare module 'styled-components' {
       TITLE: string
       TEXT: string
       SUBTEXT: string
-      BACKGROUND_SEARCH: string
       TEXT_RED: string
       WHITE: string
       WHITE300: string
@@ -21,6 +20,7 @@ declare module 'styled-components' {
       UNDERLINE: string
       ERROR: string
       SUCESS: string
+      BACKGROUND_RED: string
     }
   }
 }

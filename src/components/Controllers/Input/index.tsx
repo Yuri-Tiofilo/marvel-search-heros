@@ -8,59 +8,53 @@ import React, {
 import { IconBaseProps } from 'react-icons'
 import { useField } from '@unform/core'
 import { Container } from './styles'
+import { useTheme } from 'styled-components'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  name: string
   containerStyle?: object
   icon?: React.ComponentType<IconBaseProps>
+  onBlur(): void
 }
 const Input: React.FC<InputProps> = ({
-  name,
   containerStyle = {},
   icon: Icon,
+  onBlur,
   ...rest
 }) => {
+  const theme = useTheme()
   const inputRef = useRef<HTMLInputElement>(null)
   const [isFocused, setIsFocused] = useState(false)
   const [isFilled, setIsFilled] = useState(false)
-  const { fieldName, defaultValue, error, registerField } = useField(name)
   const handleInputFocus = useCallback(() => {
     setIsFocused(true)
-    // se conter valor no inputRef ele entra no if se não,não.
 
     setIsFilled(!!inputRef.current?.value)
   }, [])
   const handleInputBlur = useCallback(() => {
     setIsFocused(false)
-    // se conter valor no inputRef ele entra no if se não,não.
 
     setIsFilled(!!inputRef.current?.value)
+
+    onBlur()
   }, [])
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: inputRef.current,
-      path: 'value'
-    })
-  }, [fieldName, registerField])
+
   return (
     <Container
       style={containerStyle}
-      isErrored={!!error}
+      isErrored={false}
       isFilled={isFilled}
       isFocused={isFocused}
       data-testid="input-container"
     >
-      {Icon && <Icon size={20} />}
+      {Icon && <Icon size={20} color={theme.COLORS.PRIMARY} />}
       <input
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
-        defaultValue={defaultValue}
-        {...rest}
         ref={inputRef}
+        {...rest}
       />
     </Container>
   )
 }
 
-export default Input
+export { Input }

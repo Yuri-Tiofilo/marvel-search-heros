@@ -9,8 +9,8 @@ export default {
     TITLE: '#404040',
     TEXT: '#383B43',
     SUBTEXT: '#6D7278',
-    BACKGROUND_SEARCH: '',
     TEXT_RED: '#ed4340',
+    BACKGROUND_RED: '#ffe0de',
 
     WHITE: '#FFFFFF',
     WHITE300: '#F1F1F1',

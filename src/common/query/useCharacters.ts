@@ -9,12 +9,20 @@ const urlDefault = `/characters?ts=${ts}&apikey=${apiKey}&hash=${hash}`
 
 type PropsCharacters = {
   url?: string
-  page?: number
+  params?: {
+    ts?: string
+    apiKey?: string
+    hash?: string
+    offset?: string
+    page?: number
+  }
 }
 
-export function useCharacters({ url = urlDefault, page = 0 }: PropsCharacters) {
-  return useQuery('posts', async () => {
-    const { data } = await api.get(url)
-    return data
-  })
+export async function loadCharacters(url: string) {
+  const { data } = await api.get(url)
+  return data
+}
+
+export function useCharacters({ url = urlDefault }: PropsCharacters) {
+  return useQuery('characters', () => loadCharacters(url))
 }

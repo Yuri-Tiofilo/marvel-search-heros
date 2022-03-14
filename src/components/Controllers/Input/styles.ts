@@ -7,48 +7,48 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  background: #232129;
-  color: #606360;
-  border-radius: 10px;
-  border: 2px solid #232129;
+  background: ${({ theme }) => theme.COLORS.BACKGROUND_RED};
+  border-radius: 52px;
+  border: 1px solid transparent;
   padding: 16px;
   width: 100%;
+  max-width: 800px;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.COLORS.PRIMARY};
   ${props =>
     props.isErrored &&
     css`
-      border-color: #c53030;
+      border-color: ${({ theme }) => theme.COLORS.ERROR};
     `}
   ${props =>
     props.isFocused &&
     css`
-      color: #ff9900;
-      border-color: #ff9900;
+      border-color: ${({ theme }) => theme.COLORS.PRIMARY};
     `}
   ${props =>
     props.isFilled &&
     css`
-      color: #ff9900;
+      color: ${({ theme }) => theme.COLORS.PRIMARY};
     `}
     input {
-    flex: 1;
-    color: #f4ede8;
+    color: ${({ theme }) => theme.COLORS.PRIMARY};
     background: transparent;
     border: 0;
+    padding-left: 15px;
     &::placeholder {
-      color: #606360;
+      color: ${({ theme }) => theme.COLORS.TEXT_RED};
     }
     ${props =>
       props.isFocused &&
       css`
-        color: #ff9900;
-        border-color: #ff9900;
+        color: ${({ theme }) => theme.COLORS.PRIMARY};
+        border-color: ${({ theme }) => theme.COLORS.PRIMARY};
       `}
     ${props =>
       props.isFilled &&
       css`
-        color: #ff9900;
+        color: ${({ theme }) => theme.COLORS.PRIMARY};
       `}
   }
   svg {
