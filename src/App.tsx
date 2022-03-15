@@ -23,7 +23,7 @@ const App: React.FC = () => (
           <GlobalStyle />
         </ThemeProvider>
       </AppProvider>
-      <ReactQueryDevtools initialIsOpen />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </Router>
 )

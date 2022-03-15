@@ -46,7 +46,7 @@ describe('Input Component', () => {
     })
   })
 
-  it('should keep input border highlight when input filled', async () => {
+  it('not should keep input border highlight when input filled', async () => {
     const { getByPlaceholderText, getByTestId } = render(
       <Input
         name="email"
@@ -65,7 +65,7 @@ describe('Input Component', () => {
     })
 
     await wait(() => {
-      expect(containerElement).toHaveStyle('color: rgb(96, 99, 96);')
+      expect(containerElement).not.toHaveStyle('color: rgb(96, 99, 96);')
     })
   })
 })

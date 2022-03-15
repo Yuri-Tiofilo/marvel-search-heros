@@ -8,6 +8,7 @@ export type Results = {
   id: number
   description: string
   thumbnail: TumbMail
+  isFavorite?: boolean
 }
 
 export type DataResultsAPI = {

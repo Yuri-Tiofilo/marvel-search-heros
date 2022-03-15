@@ -15,6 +15,10 @@ export const Content = styled.div`
   align-items: center;
 
   padding-top: 50px;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 
 export const Order = styled.div`
@@ -22,6 +26,10 @@ export const Order = styled.div`
   flex-direction: row;
 
   color: ${({ theme }) => theme.COLORS.TEXT_RED};
+
+  @media screen and (max-width: 480px) {
+    margin-top: 20px;
+  }
 `
 
 export const ContentOrder = styled.div`
@@ -31,6 +39,16 @@ export const ContentOrder = styled.div`
 
   span {
     margin-right: 16px;
+  }
+
+  img {
+    margin-right: 10px;
+  }
+
+  @media screen and (max-width: 480px) {
+    span {
+      margin-right: 5px;
+    }
   }
 `
 
@@ -44,6 +62,14 @@ export const Favorite = styled.button`
   span {
     color: ${({ theme }) => theme.COLORS.TEXT_RED};
     margin-left: 10px;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-left: 30px;
+    span {
+      color: ${({ theme }) => theme.COLORS.TEXT_RED};
+      margin-left: 5px;
+    }
   }
 `
 

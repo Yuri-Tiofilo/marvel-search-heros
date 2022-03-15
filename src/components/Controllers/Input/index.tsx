@@ -13,7 +13,7 @@ import { useTheme } from 'styled-components'
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   containerStyle?: object
   icon?: React.ComponentType<IconBaseProps>
-  onBlur(): void
+  onBlur(element: React.FocusEvent<HTMLInputElement>): void
 }
 const Input: React.FC<InputProps> = ({
   containerStyle = {},
@@ -30,12 +30,12 @@ const Input: React.FC<InputProps> = ({
 
     setIsFilled(!!inputRef.current?.value)
   }, [])
-  const handleInputBlur = useCallback(() => {
+  const handleInputBlur = useCallback(element => {
     setIsFocused(false)
 
     setIsFilled(!!inputRef.current?.value)
 
-    onBlur()
+    onBlur(element)
   }, [])
 
   return (
@@ -49,8 +49,9 @@ const Input: React.FC<InputProps> = ({
       {Icon && <Icon size={20} color={theme.COLORS.PRIMARY} />}
       <input
         onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
+        onBlur={element => handleInputBlur(element)}
         ref={inputRef}
+        onKeyDown={element => console.log('veio aqui')}
         {...rest}
       />
     </Container>

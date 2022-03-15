@@ -18,7 +18,8 @@ type PropsCharacters = {
   }
 }
 
-export async function loadCharacters(url: string) {
+export async function loadCharacters(url: string, params?: object) {
+  const urlFormatted = '/'
   const { data } = await api.get(url)
   return data
 }

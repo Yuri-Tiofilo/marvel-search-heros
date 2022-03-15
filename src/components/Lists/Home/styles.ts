@@ -1,5 +1,11 @@
 import { darken } from 'polished'
 import styled from 'styled-components'
+import Favorite from 'assets/favorito_02.svg'
+import FavoriteHover from 'assets/favorito_01.svg'
+
+type PropsButtonFavorite = {
+  isActive?: boolean
+}
 
 export const Container = styled.ul`
   display: grid;
@@ -9,6 +15,18 @@ export const Container = styled.ul`
   width: 100%;
 
   margin-top: 10px;
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 8px;
+    /* max-width: 70rem; */
+  }
+
+  @media screen and (min-width: 480px) and (max-width: 1023px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8px;
+    max-width: 70rem;
+  }
 
   li {
     display: flex;
@@ -22,38 +40,61 @@ export const Container = styled.ul`
       line-height: 20px;
       color: #333;
     }
+
+    > div {
+      display: flex;
+      padding: 20px 0px;
+      justify-content: space-between;
+    }
     div h3 {
       font-size: 18px;
       /* font-weight: bold; */
-      margin: 5px 0 20px;
+      margin-right: 20px;
     }
-    button {
-      background: #7159c1;
-      color: #fff;
-      border: 0;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      transition: background 0.2s;
-      &:hover {
-        background: ${darken(0.03, '#7159c1')};
+
+    img {
+      height: 230px;
+      width: 230px;
+    }
+
+    @media screen and (max-width: 480px) {
+      img {
+        height: 160px;
+        width: 160px;
       }
-      div {
+    }
+
+    @media screen and (min-width: 480px) and (max-width: 1023px) {
+      > div {
         display: flex;
-        align-items: center;
-        padding: 12px;
-        background: rgba(0, 0, 0, 0.1);
-        svg {
-          margin-right: 5px;
-        }
+        padding: 20px 5px 20px 0px;
+        justify-content: space-between;
       }
-      span {
-        flex: 1;
-        text-align: center;
-        font-weight: bold;
+      div h3 {
+        font-size: 18px;
+        /* font-weight: bold; */
+        margin-right: 20px;
       }
     }
+  }
+`
+
+export const ButtonFavorite = styled.button<PropsButtonFavorite>`
+  border: 0;
+  background: ${({ isActive }) =>
+    isActive
+      ? `url(${FavoriteHover}) no-repeat center`
+      : `url(${Favorite}) no-repeat center`};
+  width: 30px;
+  height: 30px;
+
+  margin-right: 20px;
+
+  z-index: 999999;
+
+  transition: background 0.5s;
+
+  :hover {
+    background: url(${FavoriteHover}) no-repeat center;
   }
 `

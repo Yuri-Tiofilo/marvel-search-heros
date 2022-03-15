@@ -4,7 +4,7 @@ import { shade } from 'polished'
 import { Search } from '../Search'
 
 import IconFavorite from 'assets/favorito_01.svg'
-import IconFavorite2 from 'assets/favorito_01.svg'
+import Hero from 'assets/ic_heroi.svg'
 
 import { useTheme } from 'styled-components'
 
@@ -18,24 +18,24 @@ import {
 } from './styles'
 
 type Props = {
-  teste(): void
   lengthResults?: number
   setSwitch(checked: boolean): void
   switchState: boolean
   setFavorite(): void
+  onblur(element: React.FocusEvent<HTMLInputElement>): void
 }
 
 const HomeFilter = ({
-  teste,
   lengthResults,
   setSwitch,
   switchState,
-  setFavorite
+  setFavorite,
+  onblur
 }: Props) => {
   const theme = useTheme()
   return (
     <Container>
-      <Search />
+      <Search onblur={element => onblur(element)} />
 
       <Content>
         <div>
@@ -46,6 +46,7 @@ const HomeFilter = ({
 
         <Order>
           <ContentOrder>
+            <img src={Hero} alt="Hero Icon" />
             <span>Ordernar por - A/Z</span>
             <Switch
               onChange={checked => {
@@ -63,7 +64,7 @@ const HomeFilter = ({
           </ContentOrder>
 
           <Favorite onClick={() => setFavorite()}>
-            <img src={IconFavorite} />
+            <img src={IconFavorite} alt="Icon Favorite" />
             <span>Somente Favoritos</span>
           </Favorite>
         </Order>
