@@ -1,24 +1,23 @@
 import React, {
   InputHTMLAttributes,
-  useEffect,
   useRef,
   useState,
   useCallback
 } from 'react'
 import { IconBaseProps } from 'react-icons'
-import { useField } from '@unform/core'
-import { Container } from './styles'
 import { useTheme } from 'styled-components'
 
+import { Container } from './styles'
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  containerStyle?: object
   icon?: React.ComponentType<IconBaseProps>
   onBlur(element: React.FocusEvent<HTMLInputElement>): void
+  isHome?: boolean
 }
 const Input: React.FC<InputProps> = ({
-  containerStyle = {},
   icon: Icon,
   onBlur,
+  isHome = true,
   ...rest
 }) => {
   const theme = useTheme()
@@ -30,17 +29,20 @@ const Input: React.FC<InputProps> = ({
 
     setIsFilled(!!inputRef.current?.value)
   }, [])
-  const handleInputBlur = useCallback(element => {
-    setIsFocused(false)
+  const handleInputBlur = useCallback(
+    element => {
+      setIsFocused(false)
 
-    setIsFilled(!!inputRef.current?.value)
+      setIsFilled(!!inputRef.current?.value)
 
-    onBlur(element)
-  }, [])
+      onBlur(element)
+    },
+    [onBlur]
+  )
 
   return (
     <Container
-      style={containerStyle}
+      isHome={isHome}
       isErrored={false}
       isFilled={isFilled}
       isFocused={isFocused}
@@ -51,7 +53,6 @@ const Input: React.FC<InputProps> = ({
         onFocus={handleInputFocus}
         onBlur={element => handleInputBlur(element)}
         ref={inputRef}
-        onKeyDown={element => console.log('veio aqui')}
         {...rest}
       />
     </Container>

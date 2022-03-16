@@ -1,11 +1,11 @@
 import React, { memo } from 'react'
-import { DataResultsAPI, Results } from 'containers/Home/home.types'
+import { Results } from 'containers/Home/home.types'
 
 import { Container, ButtonFavorite } from './styles'
 import { Link } from 'react-router-dom'
 
 type Props = {
-  resultsCharacters?: DataResultsAPI
+  resultsCharacters: Results[]
   setFavoriteInStorage(element: Results): void
 }
 
@@ -14,11 +14,11 @@ function ListHome({ resultsCharacters, setFavoriteInStorage }: Props) {
     <>
       {resultsCharacters && (
         <Container style={{ maxWidth: '70rem', width: '100%' }}>
-          {resultsCharacters.results.map((element, key) => (
+          {resultsCharacters.map((element, key) => (
             <li key={key}>
               <>
                 <Link
-                  to={`/details/${element.name}`}
+                  to={`/details/${element.id}`}
                   style={{ textDecoration: 'none', color: 'initial' }}
                 >
                   <img
@@ -30,7 +30,7 @@ function ListHome({ resultsCharacters, setFavoriteInStorage }: Props) {
                 </Link>
                 <div>
                   <Link
-                    to={`/details/${element.name}`}
+                    to={`/details/${element.id}`}
                     style={{ textDecoration: 'none', color: 'initial' }}
                   >
                     <h3>{element.name}</h3>
@@ -39,10 +39,7 @@ function ListHome({ resultsCharacters, setFavoriteInStorage }: Props) {
                   <ButtonFavorite
                     isActive={element.isFavorite}
                     onClick={() => {
-                      setFavoriteInStorage({
-                        ...element,
-                        isFavorite: true
-                      })
+                      setFavoriteInStorage(element)
                     }}
                   />
                 </div>

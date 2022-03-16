@@ -4,10 +4,12 @@ interface ContainerProps {
   isFocused: boolean
   isFilled: boolean
   isErrored: boolean
+  isHome: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
-  background: ${({ theme }) => theme.COLORS.BACKGROUND_RED};
+  background: ${({ theme, isHome }) =>
+    !isHome ? theme.COLORS.WHITE : theme.COLORS.BACKGROUND_RED};
   border-radius: 52px;
   border: 1px solid transparent;
   padding: 16px;
@@ -15,7 +17,8 @@ export const Container = styled.div<ContainerProps>`
   max-width: 800px;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.COLORS.PRIMARY};
+  color: ${({ theme, isHome }) =>
+    !isHome ? theme.COLORS.TEXT : theme.COLORS.PRIMARY};
   ${props =>
     props.isErrored &&
     css`
@@ -32,12 +35,14 @@ export const Container = styled.div<ContainerProps>`
       color: ${({ theme }) => theme.COLORS.PRIMARY};
     `}
     input {
-    color: ${({ theme }) => theme.COLORS.PRIMARY};
+    color: ${({ theme, isHome }) =>
+      !isHome ? theme.COLORS.TEXT : theme.COLORS.PRIMARY};
     background: transparent;
     border: 0;
     padding-left: 15px;
     &::placeholder {
-      color: ${({ theme }) => theme.COLORS.TEXT_RED};
+      color: ${({ theme, isHome }) =>
+        !isHome ? theme.COLORS.SUBTEXT : theme.COLORS.PRIMARY};
     }
     ${props =>
       props.isFocused &&

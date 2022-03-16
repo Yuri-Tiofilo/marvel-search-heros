@@ -1,4 +1,3 @@
-import { darken } from 'polished'
 import styled from 'styled-components'
 import Favorite from 'assets/favorito_02.svg'
 import FavoriteHover from 'assets/favorito_01.svg'

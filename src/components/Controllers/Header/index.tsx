@@ -1,8 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-import { Container, Image } from './styles'
 import LogoHome from 'assets/logo.svg'
 import LogoDetails from 'assets/logo_menor.svg'
+import { Search } from 'components/Filters/Search'
+
+import { Container, Image, ContentImage, ContentSearch } from './styles'
 
 type HeaderProps = {
   isHome?: boolean
@@ -13,12 +16,22 @@ const Header = ({ isHome = false }: HeaderProps) => {
     <>
       {isHome ? (
         <Container isHome={isHome}>
-          <Image src={LogoHome} alt="Logo" />
+          <Link to="/" style={{ cursor: 'pointer' }}>
+            <Image src={LogoHome} alt="Logo details" />
+          </Link>
         </Container>
       ) : (
-        <header>
-          <img src={LogoDetails} alt="Logo details" />
-        </header>
+        <Container isHome={isHome}>
+          <ContentImage>
+            <Link to="/" style={{ cursor: 'pointer' }}>
+              <Image src={LogoDetails} alt="Logo details" />
+            </Link>
+          </ContentImage>
+
+          <ContentSearch>
+            <Search isHome={false} onblur={() => {}} />
+          </ContentSearch>
+        </Container>
       )}
     </>
   )

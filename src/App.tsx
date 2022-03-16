@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { ThemeProvider } from 'styled-components'
@@ -12,7 +12,7 @@ import { Main } from 'containers/Main'
 import AppProvider from 'hooks'
 import theme from 'common/styles/theme'
 
-const queryClient = new QueryClient()
+import { queryClient } from 'common/services/query'
 
 const App: React.FC = () => (
   <Router>

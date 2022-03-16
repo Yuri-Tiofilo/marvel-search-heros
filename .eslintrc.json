@@ -32,6 +32,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-case-declarations": "off",
     "import/no-duplicates": "off",
-    "no-console": "error"
+    "no-console": "error",
+    "@typescript-eslint/no-empty-function": "off"
   }
 }

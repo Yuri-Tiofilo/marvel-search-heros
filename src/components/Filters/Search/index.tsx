@@ -6,17 +6,19 @@ import { Container } from './styles'
 
 type Props = {
   onblur(element: React.FocusEvent<HTMLInputElement>): void
+  isHome?: boolean
 }
 
-const Search = ({ onblur }: Props) => {
+const Search = ({ onblur, isHome = true }: Props) => {
   return (
-    <Container>
+    <Container isHome={isHome}>
       <Input
         placeholder="Procure por heróis"
         icon={FiSearch}
         onBlur={element => {
           onblur(element)
         }}
+        isHome={isHome}
       />
     </Container>
   )

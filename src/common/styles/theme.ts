@@ -13,7 +13,7 @@ export default {
     BACKGROUND_RED: '#ffe0de',
 
     WHITE: '#FFFFFF',
-    WHITE300: '#F1F1F1',
+    WHITE300: '#F3F3F3',
     BORDER: '#C5CADA',
     UNDERLINE: '#0091FF',
     ERROR: '#ed4337',

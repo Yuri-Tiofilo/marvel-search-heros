@@ -1,5 +1,5 @@
-import Home from './routes'
+import Route from './routes'
 
-const routes = [...Home]
+const routes = [...Route]
 
 export default routes

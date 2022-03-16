@@ -9,7 +9,7 @@ const urlDefault = `/characters?ts=${ts}&apikey=${apiKey}&hash=${hash}`
 
 type PropsCharacters = {
   url?: string
-  params?: {
+  params: {
     ts?: string
     apiKey?: string
     hash?: string
@@ -18,10 +18,10 @@ type PropsCharacters = {
   }
 }
 
-export async function loadCharacters(url: string, params?: object) {
-  const urlFormatted = '/'
+export async function loadCharacters(url: string) {
   const { data } = await api.get(url)
-  return data
+  const { data: responseFormatted } = data
+  return responseFormatted
 }
 
 export function useCharacters({ url = urlDefault }: PropsCharacters) {

@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
+
 import { Header } from 'components/Controllers/Header'
-import { Container, Content, Title, SubTitle } from './styles'
 import { loadCharacters } from 'common/query/useCharacters'
-
 import { HomeFilter } from 'components/Filters/HomeFilter'
-
-import { DataResultsAPI, Results } from './home.types'
 import ListHome from 'components/Lists/Home'
-
 import { Footer } from 'components/Controllers/Footer'
 import { useFavorites } from 'hooks/favorites'
+import { queryClient } from 'common/services/query'
+
+import { DataResultsAPI, Results } from './home.types'
+import { Container, Content, Title, SubTitle } from './styles'
 
 const Home = () => {
-  const [resultsCharacters, setResultsCharacters] = useState<
-    DataResultsAPI | undefined
-  >(undefined)
+  const [resultsCharacters, setResultsCharacters] = useState<DataResultsAPI>(
+    {} as DataResultsAPI
+  )
 
-  const [listFavoritesState, setListFavoritesState] = useState<
-    DataResultsAPI | undefined
-  >(undefined)
+  const [listFavoritesState, setListFavoritesState] = useState<DataResultsAPI>(
+    {} as DataResultsAPI
+  )
 
   const [loading, setLoading] = useState(false)
 
@@ -30,12 +30,12 @@ const Home = () => {
   const { saveFavorites } = useFavorites()
 
   const { data, error, isFetching } = useQuery(
-    ['characters', 1],
+    'characters',
     () =>
       loadCharacters(
-        '/characters?&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
+        '/characters?orderBy=modified&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
       ),
-    { cacheTime: 360 }
+    { cacheTime: 360, refetchOnWindowFocus: false, staleTime: 1000 * 60 }
   )
 
   useEffect(() => {
@@ -48,8 +48,7 @@ const Home = () => {
     if (data) {
       if (listFavorites) {
         const list = JSON.parse(listFavorites) as DataResultsAPI
-        const { data: results } = data
-        const mapedResults = results?.results?.map((result: Results) => {
+        const mapedResults = data?.results?.map((result: Results) => {
           list.results.map((favorite: Results) => {
             if (result.id === favorite.id) {
               return {
@@ -64,33 +63,27 @@ const Home = () => {
           })
         })
 
-        console.log(mapedResults)
+        setResultsCharacters({
+          ...data,
+          results: mapedResults
+        })
       } else {
-        const { data: results } = data
-        setResultsCharacters(results)
+        setResultsCharacters(data)
       }
     }
   }, [data])
-
-  // async function teste() {
-  //   const { data } = await loadCharacters(
-  //     '/characters?ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2&limit=1'
-  //   )
-
-  //   setResultsCharacters(data)
-  // }
 
   async function orderByName(checked: boolean) {
     setSwitchState(checked)
 
     setLoading(true)
-    if (checked) {
-      const { data } = await loadCharacters(
+    if (!checked) {
+      const data = await loadCharacters(
         '/characters?orderBy=modified&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
       )
       setResultsCharacters(data)
     } else {
-      const { data } = await loadCharacters(
+      const data = await loadCharacters(
         '/characters?ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
       )
 
@@ -102,10 +95,10 @@ const Home = () => {
   async function searchHeroName(search: string) {
     if (search !== '') {
       setLoading(true)
-      const { data } = await loadCharacters(
+
+      const data = await loadCharacters(
         `/characters?name=${search}&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2`
       )
-
       setResultsCharacters(data)
       setLoading(false)
     }
@@ -113,24 +106,49 @@ const Home = () => {
 
   async function setFavorite() {
     // lista todos os favoritos vindos o asyncStorage
+    if (listFavoritesState !== null) {
+      setResultsCharacters(listFavoritesState)
+    } else {
+    }
 
     return false
   }
 
   function setFavoriteStorage(element: Results) {
-    const maped = []
-    const data = {
-      count: 1,
-      offset: 0,
-      limit: 20,
-      total: 0,
-      results: [element]
+    const prevState = queryClient.getQueryData<DataResultsAPI>('characters')
+    if (prevState) {
+      const nextState = prevState.results.map((item: Results) => {
+        if (item.id === element.id) {
+          if (
+            element.isFavorite === false ||
+            element.isFavorite === undefined
+          ) {
+            return {
+              ...item,
+              isFavorite: true
+            }
+          } else {
+            return {
+              ...item,
+              isFavorite: false
+            }
+          }
+        } else {
+          return item
+        }
+      })
+
+      const newStateFavorites = {
+        ...prevState,
+        results: nextState
+      } as DataResultsAPI
+
+      queryClient.setQueryData('characters', newStateFavorites)
+
+      setResultsCharacters(newStateFavorites)
+
+      saveFavorites(newStateFavorites)
     }
-
-    saveFavorites(element)
-
-    // data.results.push()
-    // console.log(data)
   }
 
   return (
@@ -154,12 +172,14 @@ const Home = () => {
           {isFetching || loading ? (
             <div>Loading...</div>
           ) : (
-            <ListHome
-              resultsCharacters={resultsCharacters}
-              setFavoriteInStorage={element => {
-                setFavoriteStorage(element)
-              }}
-            />
+            data && (
+              <ListHome
+                resultsCharacters={resultsCharacters.results}
+                setFavoriteInStorage={element => {
+                  setFavoriteStorage(element)
+                }}
+              />
+            )
           )}
         </Content>
       </Container>
