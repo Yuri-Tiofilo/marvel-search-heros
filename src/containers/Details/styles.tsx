@@ -68,7 +68,7 @@ export const Image = styled.img`
 
 export const TitlePerson = styled.div`
   position: absolute;
-  right: 20px;
+  right: 80px;
 
   h1 {
     font-size: 300px;
