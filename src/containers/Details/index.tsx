@@ -1,6 +1,12 @@
 import React from 'react'
 import { useQuery } from 'react-query'
-import { loadCharacters } from 'common/query/useCharacters'
+
+import { useTheme } from 'styled-components'
+import { useParams } from 'react-router-dom'
+import { loadCharactersNew } from 'common/query/useCharacters'
+import ComicsIcon from 'assets/ic_quadrinhos.svg'
+import TrailerIcon from 'assets/ic_trailer.svg'
+import { Header } from 'components/Controllers/Header'
 
 import {
   Container,
@@ -13,15 +19,11 @@ import {
   ContentRating,
   ContentImage,
   ContentTitle,
-  Movies,
   Text,
   Title,
-  TitlePerson
+  TitlePerson,
+  LastComics
 } from './styles'
-
-import { useParams } from 'react-router-dom'
-import { Header } from 'components/Controllers/Header'
-import { useTheme } from 'styled-components'
 
 type Params = {
   id?: string
@@ -33,10 +35,7 @@ const Details = () => {
 
   const { data, isFetching } = useQuery(
     'character-details',
-    () =>
-      loadCharacters(
-        `/characters/${characterId}?ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2`
-      ),
+    () => loadCharactersNew({ url: `/characters/${characterId}?` }),
     { refetchOnWindowFocus: false }
   )
 
@@ -47,36 +46,63 @@ const Details = () => {
       <Content>
         {isFetching && <div>Loading...</div>}
 
-        <Info>
-          <ContentTitle>
-            <Title>{data && data.results[0].name}</Title>
-          </ContentTitle>
+        {data && (
+          <>
+            <Info>
+              <ContentTitle>
+                <Title>{data && data.results[0].name}</Title>
+              </ContentTitle>
 
-          <Text>{data && data.results[0].description}</Text>
-          <Movies />
-          <ContentRating />
-          <ContentNumbers />
-          <Comics />
-          <Stars
-            count={5}
-            value={5}
-            size={28}
-            color2={theme.COLORS.PRIMARY}
-            edit={false}
-          />
-        </Info>
-        <TitlePerson>
-          {' '}
-          <h1>{data && data.results[0].name}</h1>
-        </TitlePerson>
-        <ContentImage>
-          <Image
-            src={
-              data &&
-              `${data.results[0].thumbnail.path}.${data.results[0].thumbnail.extension}`
-            }
-          />
-        </ContentImage>
+              <Text>{data && data.results[0].description}</Text>
+
+              <ContentNumbers>
+                <Comics>
+                  <span>Quadrinhos</span>
+                  <div className="box">
+                    <img src={ComicsIcon} alt="Icon Comics" />
+                    3.000
+                  </div>
+                </Comics>
+
+                <Comics>
+                  <span>Filmes</span>
+
+                  <div className="box">
+                    <img src={TrailerIcon} alt="Icon Trailer" />
+                    40
+                  </div>
+                </Comics>
+              </ContentNumbers>
+              <ContentRating>
+                <span>Rating: </span>
+                <Stars
+                  count={5}
+                  value={5}
+                  size={25}
+                  color2={theme.COLORS.PRIMARY}
+                  edit={false}
+                />
+              </ContentRating>
+
+              <LastComics>
+                <span>Ultimos lançamentos: </span>
+                10 de outubro de 2022
+              </LastComics>
+            </Info>
+            <TitlePerson>
+              {' '}
+              <h1>{data && data.results[0].name}</h1>
+            </TitlePerson>
+            <ContentImage>
+              <Image
+                src={
+                  data &&
+                  `${data.results[0].thumbnail.path}.${data.results[0].thumbnail.extension}`
+                }
+              />
+            </ContentImage>
+          </>
+        )}
       </Content>
     </Container>
   )

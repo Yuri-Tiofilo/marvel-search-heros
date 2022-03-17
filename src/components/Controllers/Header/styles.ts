@@ -49,7 +49,7 @@ export const ContentSearch = styled.div`
   align-items: flex-start;
 
   @media screen and (max-width: 480px) {
-    width: 100%;
+    width: 120%;
   }
 
   @media screen and (min-width: 480px) and (max-width: 1023px) {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 
 import { Header } from 'components/Controllers/Header'
-import { loadCharacters } from 'common/query/useCharacters'
+import { loadCharactersNew } from 'common/query/useCharacters'
 import { HomeFilter } from 'components/Filters/HomeFilter'
 import ListHome from 'components/Lists/Home'
 import { Footer } from 'components/Controllers/Footer'
@@ -32,9 +32,9 @@ const Home = () => {
   const { data, error, isFetching } = useQuery(
     'characters',
     () =>
-      loadCharacters(
-        '/characters?orderBy=modified&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
-      ),
+      loadCharactersNew({
+        url: '/characters?orderBy=modified'
+      }),
     { cacheTime: 360, refetchOnWindowFocus: false, staleTime: 1000 * 60 }
   )
 
@@ -78,13 +78,18 @@ const Home = () => {
 
     setLoading(true)
     if (!checked) {
-      const data = await loadCharacters(
-        '/characters?orderBy=modified&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
+      const data = await queryClient.fetchQuery('characters', () =>
+        loadCharactersNew({
+          url: '/characters?orderBy=modified'
+        })
       )
+
       setResultsCharacters(data)
     } else {
-      const data = await loadCharacters(
-        '/characters?ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2'
+      const data = await queryClient.fetchQuery('characters', () =>
+        loadCharactersNew({
+          url: '/characters?orderBy=name'
+        })
       )
 
       setResultsCharacters(data)
@@ -96,9 +101,12 @@ const Home = () => {
     if (search !== '') {
       setLoading(true)
 
-      const data = await loadCharacters(
-        `/characters?name=${search}&ts=9&apikey=0f7f683a2a1c279ebeb328deba9cb9af&hash=a0b8708edffb7834d623d07480ea13f2`
+      const data = await queryClient.fetchQuery('characters', () =>
+        loadCharactersNew({
+          url: `/characters?name=${search}`
+        })
       )
+
       setResultsCharacters(data)
       setLoading(false)
     }

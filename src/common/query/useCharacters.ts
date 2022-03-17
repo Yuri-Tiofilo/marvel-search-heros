@@ -8,14 +8,21 @@ const { apiKey, hash, ts } = baseConfig
 const urlDefault = `/characters?ts=${ts}&apikey=${apiKey}&hash=${hash}`
 
 type PropsCharacters = {
-  url?: string
-  params: {
+  url: string
+  params?: {
     ts?: string
     apiKey?: string
     hash?: string
     offset?: string
     page?: number
   }
+}
+
+export async function loadCharactersNew({ url }: PropsCharacters) {
+  const urlFormatted = `${url}&ts=${ts}&apikey=${apiKey}&hash=${hash}`
+  const { data } = await api.get(urlFormatted)
+  const { data: responseFormatted } = data
+  return responseFormatted
 }
 
 export async function loadCharacters(url: string) {
