@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent, wait } from '@testing-library/react'
-import SignIn from '../../containers/Home'
+import Details from '../../containers/Details'
 
 const mockedHistoryPush = jest.fn()
 const mockedSignIn = jest.fn()
@@ -36,7 +36,7 @@ describe('SignIn Page', () => {
     mockedHistoryPush.mockClear()
   })
   it('should to be able sign in', async () => {
-    const { getByPlaceholderText, getByText } = render(<SignIn />)
+    const { getByPlaceholderText, getByText } = render(<Details />)
 
     const emailField = getByPlaceholderText('E-mail')
     const passwordField = getByPlaceholderText('Senha')
@@ -53,7 +53,7 @@ describe('SignIn Page', () => {
   })
 
   it('should not be able sign in with invalid credentials', async () => {
-    const { getByPlaceholderText, getByText } = render(<SignIn />)
+    const { getByPlaceholderText, getByText } = render(<Details />)
 
     const emailField = getByPlaceholderText('E-mail')
     const passwordField = getByPlaceholderText('Senha')
@@ -73,7 +73,7 @@ describe('SignIn Page', () => {
       throw new Error()
     })
 
-    const { getByPlaceholderText, getByText } = render(<SignIn />)
+    const { getByPlaceholderText, getByText } = render(<Details />)
 
     const emailField = getByPlaceholderText('E-mail')
     const passwordField = getByPlaceholderText('Senha')
