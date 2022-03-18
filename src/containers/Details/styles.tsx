@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import ReactStars from 'react-stars'
 
+import Favorite from 'assets/favorito_02.svg'
+import FavoriteHover from 'assets/favorito_03.svg'
+
 export const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
   background: ${({ theme }) => theme.COLORS.WHITE300};
 `
 
@@ -21,8 +22,9 @@ export const Content = styled.div`
     align-items: center;
     flex-direction: column;
 
-    img {
-      margin-top: 30px;
+    > img {
+      margin-top: 60px;
+      display: none;
     }
   }
 
@@ -55,6 +57,8 @@ export const Info = styled.div`
 export const ContentTitle = styled.div`
   display: flex;
   flex-direction: row;
+
+  justify-content: space-between;
 `
 
 export const Title = styled.h1`
@@ -92,11 +96,19 @@ export const ContentNumbers = styled.div`
       margin-right: 10px;
     }
   }
+
+  @media screen and (max-width: 480px) {
+    > img {
+      margin-top: 10px;
+    }
+  }
+
+  @media screen and (min-width: 480px) and (max-width: 1023px) {
+    width: 70%;
+  }
 `
 
 export const Comics = styled.div``
-
-export const Movies = styled.div``
 
 export const ContentRating = styled.div`
   display: flex;
@@ -130,6 +142,8 @@ export const Image = styled.img`
   @media screen and (max-width: 480px) {
     height: 250px;
     width: 250px;
+
+    margin-top: 20px;
   }
 
   @media screen and (min-width: 480px) and (max-width: 1023px) {
@@ -169,9 +183,40 @@ export const TitlePerson = styled.div`
   }
 `
 export const LastComics = styled.div`
+  margin-top: 20px;
   span {
     font-weight: bold;
     margin-right: 10px;
     color: ${({ theme }) => theme.COLORS.SUBTEXT};
+  }
+`
+
+export const ListLast = styled.div``
+
+export const ListLastTilte = styled.h2`
+  @media screen and (max-width: 480px) {
+    text-align: center;
+  }
+`
+
+type PropsButtonFavorite = {
+  isActive?: boolean
+}
+
+export const ButtonFavorite = styled.button<PropsButtonFavorite>`
+  border: 0;
+  background: ${({ isActive }) =>
+    isActive
+      ? `url(${FavoriteHover}) no-repeat center`
+      : `url(${Favorite}) no-repeat center`};
+  width: 50px;
+  height: 50px;
+
+  margin-right: 20px;
+
+  transition: background 0.5s;
+
+  :hover {
+    background: url(${FavoriteHover}) no-repeat center;
   }
 `

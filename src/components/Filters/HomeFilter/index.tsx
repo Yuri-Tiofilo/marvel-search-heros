@@ -21,6 +21,10 @@ type Props = {
   switchState: boolean
   setFavorite(): void
   onblur(element: React.FocusEvent<HTMLInputElement>): void
+  isSearched?: boolean
+  onChangeText(element: React.ChangeEvent<HTMLInputElement>): void
+  cleanSearch(): void
+  value: string
 }
 
 const HomeFilter = ({
@@ -28,12 +32,22 @@ const HomeFilter = ({
   setSwitch,
   switchState,
   setFavorite,
-  onblur
+  onblur,
+  isSearched,
+  onChangeText,
+  cleanSearch,
+  value
 }: Props) => {
   const theme = useTheme()
   return (
     <Container>
-      <Search onblur={element => onblur(element)} />
+      <Search
+        onblur={element => onblur(element)}
+        isSearched={isSearched}
+        onChangeText={element => onChangeText(element)}
+        cleanSearch={cleanSearch}
+        value={value}
+      />
 
       <Content>
         <div>

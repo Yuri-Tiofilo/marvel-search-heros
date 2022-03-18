@@ -6,7 +6,7 @@ type Props = {
 
 export const Container = styled.div<Props>`
   display: flex;
-  flex-direction: ${({ isHome }) => (!isHome ? 'flex-start' : 'column')};
+  flex-direction: ${({ isHome }) => (!isHome ? 'row' : 'column')};
   align-items: center;
 
   width: 100%;

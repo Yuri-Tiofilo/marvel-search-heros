@@ -22,6 +22,8 @@ const FavoriteProvider: React.FC = ({ children }) => {
 
   function saveFavorites(element: DataResultsAPI) {
     setFavorites(element)
+
+    localStorage.setItem('@Marvel:listFavorites', JSON.stringify(element))
   }
 
   return (

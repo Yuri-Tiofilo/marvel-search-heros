@@ -1,10 +1,11 @@
-type TumbMail = {
+export type TumbMail = {
   path: string
   extension: string
 }
 
 export type Results = {
   name: string
+  title: string
   id: number
   description: string
   thumbnail: TumbMail

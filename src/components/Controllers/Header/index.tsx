@@ -29,7 +29,14 @@ const Header = ({ isHome = false }: HeaderProps) => {
           </ContentImage>
 
           <ContentSearch>
-            <Search isHome={false} onblur={() => {}} />
+            <Search
+              isHome={false}
+              onblur={() => {}}
+              cleanSearch={() => {}}
+              onChangeText={() => {}}
+              value=""
+              isSearched={false}
+            />
           </ContentSearch>
         </Container>
       )}
