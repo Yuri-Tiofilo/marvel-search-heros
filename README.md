@@ -28,11 +28,20 @@ or
 git push origin main // CI/CD Netlify
 `````
 
-### images App
+### Images Web
 
 <div style="display: flex;flex-direction: row;">
-  <image src="./assets/image1.png" style="width: 260px">
-  <image src="./assets/image2.png" style="width: 260px">
-  <image src="./assets/image3.png" style="width: 260px">
-  <image src="./assets/image4.png" style="width: 260px">
+  <image src="./images/image1.png" style="width: 500px">
+  <image src="./images/image3.png" style="width: 500px">
+<!--   <image src="./images/image2.png" style="width: 260px"> -->
+<!--   <image src="./images/image4.png" style="width: 260px"> -->
+  <image src="./images/image5.png" style="width: 500px">
+  <image src="./images/image6.png" style="width: 500px">
+</div>
+    
+### Images Mobile
+
+<div style="display: flex;flex-direction: row;">
+  <image src="./images/image2.png" style="width: 260px">
+  <image src="./images/image4.png" style="width: 260px">
 </div>
