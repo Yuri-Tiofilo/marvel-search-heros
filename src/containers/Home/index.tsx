@@ -9,6 +9,7 @@ import ListHome from 'components/Lists/Home'
 import { Footer } from 'components/Controllers/Footer'
 import { useFavorites } from 'hooks/favorites'
 import { queryClient } from 'common/services/query'
+import { dataStorage } from 'common/utils'
 
 import { DataResultsAPI, Results } from './home.types'
 import { Container, Content, Title, SubTitle } from './styles'
@@ -27,7 +28,7 @@ const Home = () => {
 
   const { t } = useTranslation()
 
-  const { saveFavorites, favorites } = useFavorites()
+  const { favorites, setFavoriteStorage: storageFavorite } = useFavorites()
 
   const { data, error, isFetching } = useQuery(
     'characters',
@@ -37,23 +38,6 @@ const Home = () => {
       }),
     { cacheTime: 360, refetchOnWindowFocus: false, staleTime: 1000 * 60 }
   )
-
-  function dataStorage(
-    stateQuery: DataResultsAPI,
-    favoritesState: DataResultsAPI
-  ) {
-    const filteredFavoritesStorage = stateQuery.results.map(
-      (characters: Results) => ({
-        ...characters,
-        isFavorite: favoritesState.results.some(
-          (favorite: Results) => favorite.id === characters.id
-        )
-      })
-    )
-
-    return { filteredFavoritesStorage }
-  }
-
   useEffect(() => {
     if (data) {
       if (favorites.results) {
@@ -68,27 +52,24 @@ const Home = () => {
     }
   }, [data, favorites])
 
+  async function fetchData(filter: string): Promise<DataResultsAPI> {
+    const data = await queryClient.fetchQuery('characters', () =>
+      loadCharactersNew({
+        url: filter
+      })
+    )
+    return data
+  }
+
   async function orderByName(checked: boolean) {
     setSwitchState(checked)
 
     setLoading(true)
-    if (!checked) {
-      const data = await queryClient.fetchQuery('characters', () =>
-        loadCharactersNew({
-          url: '/characters?orderBy=modified'
-        })
-      )
+    const data = await fetchData(
+      !checked ? '/characters?orderBy=modified' : '/characters?orderBy=name'
+    )
 
-      setResultsCharacters(data)
-    } else {
-      const data = await queryClient.fetchQuery('characters', () =>
-        loadCharactersNew({
-          url: '/characters?orderBy=name'
-        })
-      )
-
-      setResultsCharacters(data)
-    }
+    setResultsCharacters(data)
     setLoading(false)
   }
 
@@ -96,11 +77,7 @@ const Home = () => {
     if (search !== '') {
       setLoading(true)
 
-      const data = await queryClient.fetchQuery('characters', () =>
-        loadCharactersNew({
-          url: `/characters?name=${search}`
-        })
-      )
+      const data = await fetchData(`/characters?name=${search}`)
 
       setResultsCharacters(data)
       setLoading(false)
@@ -110,7 +87,6 @@ const Home = () => {
   }
 
   async function setFavorite() {
-    // lista todos os favoritos vindos o asyncStorage
     setResultsCharacters(favorites)
     setPageFavorite(!pageFavorite)
 
@@ -122,99 +98,19 @@ const Home = () => {
       })
     }
   }
+
   function setFavoriteStorage(element: Results) {
-    const prevState = queryClient.getQueryData<DataResultsAPI>('characters')
-    if (favorites.results) {
-      if (favorites.results.length <= 4) {
-        if (prevState) {
-          const nextState = prevState.results.map((item: Results) => {
-            if (item.id === element.id) {
-              if (
-                element.isFavorite === false ||
-                element.isFavorite === undefined
-              ) {
-                return {
-                  ...item,
-                  isFavorite: true
-                }
-              } else {
-                return {
-                  ...item,
-                  isFavorite: false
-                }
-              }
-            } else {
-              return item
-            }
-          })
-
-          const favoritesStorage = nextState.filter(element => {
-            return element.isFavorite === true
-          })
-
-          const newStateFavorites = {
-            ...prevState,
-            results: nextState
-          } as DataResultsAPI
-
-          queryClient.setQueryData('characters', newStateFavorites)
-          setResultsCharacters(newStateFavorites)
-          saveFavorites({
-            ...prevState,
-            count: favoritesStorage.length,
-            results: favoritesStorage
-          })
-        }
-      } else {
-        alert('você já possui 5 favoritos, nosso limite é esse!')
-      }
-    } else {
-      const nextState = prevState?.results.map((item: Results) => {
-        if (item.id === element.id) {
-          if (
-            element.isFavorite === false ||
-            element.isFavorite === undefined
-          ) {
-            return {
-              ...item,
-              isFavorite: true
-            }
-          } else {
-            return {
-              ...item,
-              isFavorite: false
-            }
-          }
-        } else {
-          return item
-        }
-      })
-      const data = {
-        limit: 20,
-        offset: 0,
-        count: 1,
-        results: [{ ...element, isFavorite: true }]
-      }
-
-      saveFavorites(data as DataResultsAPI)
-
-      queryClient.setQueryData('characters', {
-        ...prevState,
-        results: nextState
-      })
-    }
+    storageFavorite({
+      prevState: resultsCharacters,
+      itemFavorite: element
+    })
   }
 
   async function cleanSearch() {
     setSearched(false)
     setValueSearch('')
 
-    const data = await queryClient.fetchQuery('characters', () =>
-      loadCharactersNew({
-        url: '/characters?orderBy=modified'
-      })
-    )
-
+    const data = await fetchData('/characters?orderBy=modified')
     setResultsCharacters(data)
   }
 
@@ -222,7 +118,7 @@ const Home = () => {
     <>
       <Container>
         <Header isHome />
-        {error && <div>Error in API Marvel. Consulting Yuri Silva</div>}
+        {error && <div>{t('home.error')}</div>}
         <Content>
           <Title>{t('general.home.title1')}</Title>
 
@@ -238,9 +134,11 @@ const Home = () => {
             cleanSearch={cleanSearch}
             onChangeText={element => setValueSearch(element.target.value)}
             value={valueSearch}
+            pageFavorites={pageFavorite}
           />
+
           {isFetching || loading ? (
-            <div>Loading...</div>
+            <div>{t('home.loading')}</div>
           ) : (
             data && (
               <ListHome
@@ -257,7 +155,7 @@ const Home = () => {
           )}
 
           {favorites && favorites?.results?.length === 0 && (
-            <div>Você não possui nenhum favorito</div>
+            <div>{t('home.notFavorites')}</div>
           )}
         </Content>
       </Container>

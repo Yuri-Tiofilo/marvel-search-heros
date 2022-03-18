@@ -1,4 +1,8 @@
 {
   "home.title1": "Explore o Universo",
-  "home.subtitle": "Mergulhe no domínio deslumbrante de todos os personagens clássicos que você ama - e aqueles que você descobrirá em breve!"
+  "home.subtitle": "Mergulhe no domínio deslumbrante de todos os personagens clássicos que você ama - e aqueles que você descobrirá em breve!",
+  "home.notFavorites": "Você não possui nenhum favorito",
+  "home.loading": "Carregando...",
+  "home.error": "Error na API Marvel. Cosulte Yuri Silva",
+  "home.filters.favoritosOnly": "Somente Favoritos"
 }

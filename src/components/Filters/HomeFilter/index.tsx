@@ -1,5 +1,6 @@
 import React from 'react'
 import Switch from 'react-switch'
+import { useTranslation } from 'react-i18next'
 import { shade } from 'polished'
 import { useTheme } from 'styled-components'
 
@@ -25,6 +26,7 @@ type Props = {
   onChangeText(element: React.ChangeEvent<HTMLInputElement>): void
   cleanSearch(): void
   value: string
+  pageFavorites: boolean
 }
 
 const HomeFilter = ({
@@ -36,7 +38,8 @@ const HomeFilter = ({
   isSearched,
   onChangeText,
   cleanSearch,
-  value
+  value,
+  pageFavorites
 }: Props) => {
   const theme = useTheme()
   return (
@@ -77,7 +80,7 @@ const HomeFilter = ({
 
           <Favorite onClick={() => setFavorite()}>
             <img src={IconFavorite} alt="Icon Favorite" />
-            <span>Somente Favoritos</span>
+            <span>{pageFavorites ? 'Ver todos' : 'Somente Favoritos'}</span>
           </Favorite>
         </Order>
       </Content>
