@@ -1,7 +1,9 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { FiSearch, FiX } from 'react-icons/fi'
+
 import { Input } from 'components/Controllers/Input'
 
-import { FiSearch, FiX } from 'react-icons/fi'
 import { Container } from './styles'
 
 type Props = {
@@ -21,11 +23,13 @@ const Search = ({
   cleanSearch,
   value
 }: Props) => {
+  const { t } = useTranslation()
+
   return (
     <>
       <Container isHome={isHome}>
         <Input
-          placeholder="Procure por heróis"
+          placeholder={t('general.home.filter.search')}
           icon={FiSearch}
           onBlur={element => {
             onblur(element)
@@ -55,7 +59,7 @@ const Search = ({
             }}
           >
             <FiX size={25} style={{ marginRight: 10 }} />
-            Limpar filtro
+            {t('general.home.filter.cleanFilter')}
           </span>
         </div>
       )}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { format } from 'date-fns'
 import ptBr from 'date-fns/locale/pt-BR'
+import { toast } from 'react-toastify'
 
 import { useTheme } from 'styled-components'
 import { useParams } from 'react-router-dom'
@@ -75,16 +76,16 @@ const Details = () => {
     }
   }, [data, favorites])
 
-  async function setFavoriteStorage(element: Results) {
+  async function setFavoriteStorage(element: Results): Promise<boolean> {
     if (favorites.results) {
-      if (favorites.results.length <= 4) {
-        const filtered = favorites.results.filter(element => {
-          return element.id === data?.results[0].id
-        })
-        const indexFavorite = favorites.results.findIndex(element => {
-          return element.id === data?.results[0].id
-        })
-        if (filtered.length === 0) {
+      const filtered = favorites.results.filter(element => {
+        return element.id === data?.results[0].id
+      })
+      const indexFavorite = favorites.results.findIndex(element => {
+        return element.id === data?.results[0].id
+      })
+      if (filtered.length === 0) {
+        if (favorites.results.length <= 4) {
           const data = {
             ...favorites,
             count: favorites.count + 1,
@@ -92,29 +93,29 @@ const Details = () => {
           }
           saveFavorites(data as DataApi)
         } else {
-          const filteredRemove = favorites.results.filter((element, index) => {
-            if (index !== indexFavorite) {
-              return element
-            }
+          toast.error('Você possui diversos favoritos, nosso limite é de 5!', {
+            position: 'top-right'
           })
-
-          const data = {
-            ...favorites,
-            count: favorites.count - 1,
-            results: filteredRemove
+        }
+      } else {
+        const filteredRemove = favorites.results.filter((element, index) => {
+          if (index !== indexFavorite) {
+            return element
           }
+        })
 
-          saveFavorites(data as DataApi)
+        const data = {
+          ...favorites,
+          count: favorites.count - 1,
+          results: filteredRemove
         }
 
-        await queryClient.fetchQuery('character-details', () =>
-          loadCharactersNew({ url: `/characters/${characterId}?` })
-        )
-
-        setsActiveFavorite(!isActiveFavorite)
-      } else {
-        alert('Você possui mais seu limite de favoritos')
+        saveFavorites(data as DataApi)
       }
+
+      await queryClient.fetchQuery('character-details', () =>
+        loadCharactersNew({ url: `/characters/${characterId}?` })
+      )
     } else {
       const data = {
         limit: 20,
@@ -128,9 +129,9 @@ const Details = () => {
       await queryClient.fetchQuery('character-details', () =>
         loadCharactersNew({ url: `/characters/${characterId}?` })
       )
-
-      setsActiveFavorite(!isActiveFavorite)
     }
+
+    return true
   }
   return (
     <Container>
@@ -232,9 +233,6 @@ const Details = () => {
       >
         <ListLastTilte>Ultimos lançamentos</ListLastTilte>
       </ListLast>
-      {dataOnSaleComic && (
-        <ListDetails resultsCharacters={dataOnSaleComic.results} />
-      )}
 
       {!(isFetching || isFetchingComics) && dataOnSaleComic && (
         <ListDetails resultsCharacters={dataOnSaleComic.results} />

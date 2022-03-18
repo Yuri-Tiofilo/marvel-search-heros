@@ -28,7 +28,11 @@ const Home = () => {
 
   const { t } = useTranslation()
 
-  const { favorites, setFavoriteStorage: storageFavorite } = useFavorites()
+  const {
+    favorites,
+    setFavoriteStorage: storageFavorite,
+    saveFavorites
+  } = useFavorites()
 
   const { data, error, isFetching } = useQuery(
     'characters',
@@ -50,7 +54,8 @@ const Home = () => {
         setResultsCharacters(data)
       }
     }
-  }, [data, favorites])
+    // eslint-disable-next-line
+  }, [data])
 
   async function fetchData(filter: string): Promise<DataResultsAPI> {
     const data = await queryClient.fetchQuery('characters', () =>
@@ -114,11 +119,35 @@ const Home = () => {
     setResultsCharacters(data)
   }
 
+  function setFavoriteInPageListFavorites(element: Results) {
+    const indexFavorite = favorites.results.findIndex((favorite: Results) => {
+      return favorite.id === element.id
+    })
+
+    const filteredRemove = favorites.results.filter(
+      (favorite: Results, index: number) => {
+        if (index !== indexFavorite) {
+          return favorite
+        }
+      }
+    )
+
+    saveFavorites({
+      ...favorites,
+      count: favorites.count - 1,
+      results: filteredRemove
+    })
+
+    setResultsCharacters({
+      ...favorites,
+      results: filteredRemove
+    })
+  }
   return (
     <>
       <Container>
         <Header isHome />
-        {error && <div>{t('home.error')}</div>}
+        {error && <div>{t('general.home.error')}</div>}
         <Content>
           <Title>{t('general.home.title1')}</Title>
 
@@ -138,7 +167,7 @@ const Home = () => {
           />
 
           {isFetching || loading ? (
-            <div>{t('home.loading')}</div>
+            <div>{t('general.home.loading')}</div>
           ) : (
             data && (
               <ListHome
@@ -148,14 +177,16 @@ const Home = () => {
                 setFavoriteInStorage={element => {
                   if (!pageFavorite) {
                     setFavoriteStorage(element)
+                  } else {
+                    setFavoriteInPageListFavorites(element)
                   }
                 }}
               />
             )
           )}
 
-          {favorites && favorites?.results?.length === 0 && (
-            <div>{t('home.notFavorites')}</div>
+          {favorites && favorites?.results?.length === 0 && pageFavorite && (
+            <div>{t('general.home.notFavorites')}</div>
           )}
         </Content>
       </Container>

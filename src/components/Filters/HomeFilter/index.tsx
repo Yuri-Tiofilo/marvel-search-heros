@@ -41,7 +41,9 @@ const HomeFilter = ({
   value,
   pageFavorites
 }: Props) => {
+  const { t } = useTranslation()
   const theme = useTheme()
+
   return (
     <Container>
       <Search
@@ -55,14 +57,17 @@ const HomeFilter = ({
       <Content>
         <div>
           <TextResults>
-            {lengthResults && `Encontrados ${lengthResults} resultados`}
+            {lengthResults &&
+              t('general.home.filters.results') +
+                `${lengthResults} ` +
+                t('general.home.filters.resultsText')}
           </TextResults>
         </div>
 
         <Order>
           <ContentOrder>
             <img src={Hero} alt="Hero Icon" />
-            <span>Ordernar por - A/Z</span>
+            <span>{t('general.home.filters.orderBy')}</span>
             <Switch
               onChange={checked => {
                 setSwitch(checked)
@@ -80,7 +85,11 @@ const HomeFilter = ({
 
           <Favorite onClick={() => setFavorite()}>
             <img src={IconFavorite} alt="Icon Favorite" />
-            <span>{pageFavorites ? 'Ver todos' : 'Somente Favoritos'}</span>
+            <span>
+              {pageFavorites
+                ? t('general.home.filters.notFavoritosOnly')
+                : t('general.home.filters.favoritosOnly')}
+            </span>
           </Favorite>
         </Order>
       </Content>

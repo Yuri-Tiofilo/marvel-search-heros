@@ -10,6 +10,7 @@ export type Results = {
   description: string
   thumbnail: TumbMail
   isFavorite?: boolean
+  name: string
 }
 
 type Props = {

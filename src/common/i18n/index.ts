@@ -1,11 +1,14 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import { ptBR } from './locales'
+import { ptBR, enUs } from './locales'
 
 const resources = {
   'pt-BR': {
     translation: ptBR
+  },
+  'en-US': {
+    translation: enUs
   }
 }
 
@@ -14,7 +17,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'pt-BR',
+    fallbackLng: 'en-US',
     debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false

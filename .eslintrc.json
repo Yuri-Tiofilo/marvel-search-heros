@@ -33,6 +33,7 @@
     "no-case-declarations": "off",
     "import/no-duplicates": "off",
     "no-console": "error",
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "array-callback-return": "off"
   }
 }
