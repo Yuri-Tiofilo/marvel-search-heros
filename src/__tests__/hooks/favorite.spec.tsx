@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
 
-import { useAuth, AuthProvider } from '../../hooks/auth'
+import { FavoriteProvider, useFavorites } from '../../hooks/favorites'
+
 import api from '../../common/services/api'
 
 const apiMock = new MockAdapter(api)
@@ -22,11 +23,11 @@ describe('Auth Hook', () => {
 
     const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
 
-    const { result, waitForNextUpdate } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider
+    const { result, waitForNextUpdate } = renderHook(() => useFavorites(), {
+      wrapper: FavoriteProvider
     })
 
-    result.current.signIn({
+    result.current.favorites({
       email: 'yuri@incca.com.br',
       password: '123456'
     })
@@ -60,8 +61,8 @@ describe('Auth Hook', () => {
       }
     })
 
-    const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider
+    const { result } = renderHook(() => useFavorites(), {
+      wrapper: FavoriteProvider
     })
 
     expect(result.current.user.email).toEqual('yuri@incca.com.br')
@@ -85,8 +86,8 @@ describe('Auth Hook', () => {
 
     const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem')
 
-    const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider
+    const { result } = renderHook(() => useFavorites(), {
+      wrapper: FavoriteProvider
     })
 
     act(() => {
@@ -99,8 +100,8 @@ describe('Auth Hook', () => {
 
   it('should be able update user data', async () => {
     const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
-    const { result } = renderHook(() => useAuth(), {
-      wrapper: AuthProvider
+    const { result } = renderHook(() => useFavorites(), {
+      wrapper: FavoriteProvider
     })
 
     const user = {

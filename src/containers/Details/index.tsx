@@ -13,6 +13,10 @@ import { Header } from 'components/Controllers/Header'
 import ListDetails, { Results } from 'components/Lists/Details'
 import { queryClient } from 'common/services/query'
 
+import { Footer } from 'components/Controllers/Footer'
+import { useFavorites } from 'hooks/favorites'
+import { DataResultsAPI as DataApi } from 'containers/Home/home.types'
+
 import {
   Container,
   Content,
@@ -32,9 +36,6 @@ import {
   ListLastTilte,
   ButtonFavorite
 } from './styles'
-import { Footer } from 'components/Controllers/Footer'
-import { useFavorites } from 'hooks/favorites'
-import { DataResultsAPI as DataApi } from 'containers/Home/home.types'
 
 type Params = {
   id?: string
